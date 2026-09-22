@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Alpha Base Mk II - Interactive Interface Guide</title>
+  <style>
+    :root{--ink:#171513;--paper:#eee9df;--panel:#dedbd3;--panel2:#f6f3ec;--red:#bc241e;--red2:#821713;--blue:#2e8fa5;--green:#5ca96c;--amber:#df812d;--muted:#6f685f;--line:#aaa49a;--shadow:0 18px 50px #241a1230}
+    *{box-sizing:border-box} body{margin:0;background:#161616;color:#f4f1e9;font:15px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+    button,select{font:inherit} button{cursor:pointer} a{color:#ffb2aa} .shell{max-width:1500px;margin:auto;padding:22px}
+    .hero{display:flex;justify-content:space-between;gap:18px;align-items:flex-end;margin-bottom:18px}.eyebrow{color:#ef7c72;text-transform:uppercase;letter-spacing:.16em;font-weight:800;font-size:12px}.hero h1{margin:.2rem 0;font-size:clamp(25px,4vw,46px);line-height:1}.hero p{margin:.5rem 0 0;color:#bdb7ae;max-width:760px}.hero-note{color:#bdb7ae;font-size:13px;text-align:right;max-width:290px}
+    .toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:#242424;padding:12px 14px;border:1px solid #3a3a3a;border-radius:12px;margin-bottom:16px}.toolbar strong{font-size:13px}.mode-group{display:flex;gap:6px;flex-wrap:wrap}.mode{border:1px solid #525252;background:#303030;color:#eee;padding:8px 12px;border-radius:999px}.mode.active{background:var(--red);border-color:#ed675f}.legend{margin-left:auto;color:#aaa;font-size:12px}.legend i{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--red);margin:0 5px 0 12px}.legend i.mod{background:var(--amber)}
+    .workspace{display:grid;grid-template-columns:minmax(680px,1fr) 340px;gap:16px;align-items:start}.machine-wrap{overflow-x:auto;padding:10px 0 24px}.machine{min-width:870px;background:linear-gradient(#e9e5dc,#d8d5ce);color:var(--ink);border-radius:9px;padding:22px 26px 20px;border:2px solid #aaa59b;box-shadow:var(--shadow),inset 0 0 0 2px #f6f2e9;position:relative}.machine:before,.machine:after{content:"";position:absolute;top:10px;bottom:10px;width:20px;background:linear-gradient(90deg,#70462e,#b77a4a,#6b3c25);border-radius:7px}.machine:before{left:-18px}.machine:after{right:-18px}.brand{text-align:right;font-weight:900;letter-spacing:.1em;margin-bottom:5px}.brand b{color:var(--red);font-size:22px}.top-grid{display:grid;grid-template-columns:1.58fr .82fr;gap:22px}.matrix{display:grid;grid-template-columns:repeat(4,1fr);gap:12px 18px}.enc{background:transparent;border:0;color:var(--ink);padding:0;min-height:78px;position:relative}.enc .cap,.knob .cap{display:block;width:37px;height:37px;border-radius:50%;margin:0 auto 4px;background:radial-gradient(circle at 36% 32%,#555 0 7%,#282828 13% 48%,#090909 51% 70%,#383838 73%);box-shadow:0 2px 4px #0008}.enc .cap:after,.knob .cap:after{content:"";display:block;width:2px;height:12px;background:#eee;margin:auto;transform:translateY(4px)}.enc small{display:block;font-size:9px;line-height:1.1;color:#3b3834}.enc .num{position:absolute;right:8px;top:28px;color:#8b211d;font-weight:800;font-size:9px}.enc.selected .cap,.knob.selected .cap{outline:4px solid var(--red);outline-offset:3px}.enc.modified .cap{outline:4px solid var(--amber);outline-offset:3px}.led{display:inline-block;width:7px;height:7px;background:#999;border-radius:50%;margin-left:4px;box-shadow:inset 0 0 0 1px #555}.selected .led{background:#f3362c;box-shadow:0 0 7px #f3362c}
+    .screen-area{display:grid;grid-template-columns:repeat(3,33px) minmax(90px,1fr) repeat(2,33px) 54px;grid-template-rows:auto 94px 46px;gap:5px;align-content:start}.analog{grid-column:1/-1;display:flex;justify-content:flex-end;gap:18px;margin-bottom:7px}.knob{background:transparent;border:0;color:#222;padding:0;text-align:center}.knob .cap{width:32px;height:32px}.knob small{font-size:9px;font-weight:700}.screen{grid-column:2/7;grid-row:2;height:94px;min-width:0;background:#0c1718;color:#7ff2d3;border:5px solid #20201e;border-radius:2px;padding:7px 9px;font:12px/1.15 ui-monospace,SFMono-Regular,Consolas,monospace;box-shadow:inset 0 0 18px #000;overflow:hidden;display:grid;grid-template-rows:repeat(3,minmax(0,1fr))}.screen b,.screen span{display:flex;align-items:center;min-width:0;white-space:nowrap;overflow:hidden}.screen b{color:#fff}.data{grid-column:7;grid-row:2;align-self:center}.data .cap{width:44px;height:44px}.cursor-grid{display:contents}.small-btn,.fn,.transport{border:1px solid #8a867d;background:linear-gradient(#383838,#151515);color:#f7f4eb;border-radius:50%;width:32px;height:32px;padding:0;font-size:9px;font-weight:800;box-shadow:0 2px 3px #0006}.small-btn.wide{width:100%;height:44px;border:0;background:transparent;box-shadow:none;color:#272522;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:3px;padding:0;font-size:7px;line-height:1;white-space:nowrap}.small-btn .button-label{height:12px;display:flex;align-items:flex-end}.small-btn .button-dot{display:block;width:25px;height:25px;border:1px solid #777;border-radius:50%;background:linear-gradient(#3b3b3b,#111);box-shadow:0 2px 3px #0006}.small-btn.selected{outline:0}.small-btn.selected .button-dot{outline:3px solid var(--red);outline-offset:2px}.small-btn.active .button-dot{background:var(--red)}.cursor-grid [data-id="recpara"]{grid-column:1;grid-row:2;align-self:end}.cursor-grid [data-id="kit"]{grid-column:1;grid-row:3}.cursor-grid [data-id="disk"]{grid-column:2;grid-row:3}.cursor-grid [data-id="bpm"]{grid-column:3;grid-row:3}.cursor-grid [data-id="left"]{grid-column:5;grid-row:3}.cursor-grid [data-id="right"]{grid-column:6;grid-row:3}.fn{border-radius:7px;width:auto;height:31px;padding:0 9px}.fn.selected,.transport.selected{outline:3px solid var(--red);outline-offset:2px}.fn.active{background:var(--red)}
+    .panel-coach{display:grid;grid-template-columns:1.25fr .8fr .9fr;gap:12px;align-items:center;background:#20211f;color:#f7f4eb;border-radius:9px;padding:11px 13px;margin:14px 0 8px;border-left:5px solid var(--red)}.panel-coach strong{display:block}.panel-coach p{margin:3px 0;color:#c7c2ba;font-size:12px}.coach-tag{display:block;color:#ff8178;font-size:9px;font-weight:900;letter-spacing:.13em}.live-color{display:flex;gap:9px;align-items:center;border-left:1px solid #454545;padding-left:12px}.live-color b,.live-color small{display:block}.live-color small{color:#aaa;font-size:10px}.mini-lamp{width:23px;height:23px;flex:0 0 23px;border-radius:50%;background:#686868;box-shadow:0 0 12px currentColor;color:#686868}.mini-lamp.red{background:#ee342b;color:#ee342b}.mini-lamp.orange{background:#ef8730;color:#ef8730}.mini-lamp.green{background:#60dc73;color:#60dc73}.mini-lamp.turquoise{background:#54e2d2;color:#54e2d2}.mini-lamp.blue{background:#2ea9e7;color:#2ea9e7}.mini-lamp.violet{background:#9d63e8;color:#9d63e8}.keyboard-hint{font-size:10px;color:#aaa;border-left:1px solid #454545;padding-left:12px}.keyboard-hint b{color:#fff}.function-row{display:grid;grid-template-columns:repeat(13,1fr);gap:6px;margin:12px 0 9px}.fn{font-size:8px;padding:0 4px}.fn:nth-child(1){grid-column:span 1}.sequencer{display:grid;grid-template-columns:60px repeat(16,1fr) 66px;gap:5px;align-items:end;border-top:5px solid var(--red);padding-top:8px}.transport{width:38px;height:38px}.transport.active{background:var(--red)}.step{border:0;background:transparent;color:#23211e;padding:0;min-width:28px}.step .step-light{display:block;width:19px;height:19px;background:#222;border-radius:50%;margin:0 auto 3px;box-shadow:inset 0 2px 4px #000;transition:background .15s,box-shadow .15s}.step .step-light.is-red{background:#ee342b;box-shadow:0 0 9px #ee342b}.step .step-light.is-orange{background:#ef8730;box-shadow:0 0 9px #ef8730}.step .step-light.is-lock1{background:#54e2d2;box-shadow:0 0 10px #54e2d2}.step .step-light.is-lock2{background:#2ea9e7;box-shadow:0 0 10px #2ea9e7}.step .step-light.is-lock3{background:#9d63e8;box-shadow:0 0 10px #9d63e8}.step .step-light.is-playhead{outline:4px solid #60dc73;outline-offset:2px}.step.shift-wait .step-light{background:#ee342b;animation:blink .7s steps(2) infinite}.step .n{font-size:10px;font-weight:900}.step .shift-name{display:block;color:var(--red2);font-size:7px;line-height:1.05;height:18px;margin-top:4px}.step.selected .step-light{outline:4px solid var(--red);outline-offset:2px}.step.selected .step-light.is-playhead{outline-color:#60dc73}.step.modified .step-light{box-shadow:0 0 12px #e07924}.steps-label{font-size:8px;text-align:center;color:#6d2b28;grid-column:2/18}.pads{display:grid;grid-template-columns:repeat(11,1fr);gap:10px;margin-top:13px}.pad{border:1px solid #777;background:linear-gradient(#444,#171717);color:#fff;min-height:45px;border-radius:4px;padding:4px 3px;font-size:8px;font-weight:800}.pad.selected{outline:4px solid var(--red);outline-offset:2px}.pad.active{background:linear-gradient(#cf3d34,#70130e)}.enc.is-muted .led{background:#f3362c;animation:blink .8s steps(2) infinite;box-shadow:0 0 7px #f3362c}.transport.armed{outline:4px solid var(--amber);outline-offset:3px}.transport.key-down{transform:translateY(2px)}
+    .inspector{position:sticky;top:16px;background:#242424;border:1px solid #404040;border-radius:14px;padding:18px;box-shadow:0 16px 40px #0005}.inspector .kind{color:#ef7c72;text-transform:uppercase;letter-spacing:.12em;font-size:11px;font-weight:800}.inspector h2{margin:.25rem 0 .8rem;font-size:24px}.inspector p{color:#cbc5bc}.action{background:#303030;border-left:3px solid #737373;padding:10px 11px;margin:9px 0;border-radius:0 8px 8px 0}.action strong{display:block;color:#fff;font-size:12px;text-transform:uppercase;letter-spacing:.08em}.action.shift{border-color:var(--amber)}.warning{background:#42221f;border:1px solid #7f3832;color:#ffd9d4;border-radius:8px;padding:10px;margin-top:10px}.page-ref{color:#999;font-size:12px;margin-top:12px}
+    .section{margin-top:28px}.section-head{display:flex;justify-content:space-between;gap:18px;align-items:end;margin-bottom:12px}.section-head h2{font-size:28px;margin:0}.section-head p{max-width:700px;color:#aaa;margin:0}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}.info-card{background:#242424;border:1px solid #3e3e3e;border-radius:12px;padding:15px}.info-card h3{margin:0 0 6px}.info-card p{margin:6px 0;color:#c8c2b9}.info-card small{color:#8e8880}.engine-card{border-top:4px solid #555}.engine-card.analog{border-top-color:#d34a40}.engine-card.hybrid{border-top-color:#e28b35}.engine-card.digital{border-top-color:#3f9eae}.engine-card.fm{border-top-color:#9569d4}.tag{display:inline-block;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#aaa;margin-bottom:7px}.parameter-map{display:grid;grid-template-columns:150px repeat(4,1fr);gap:5px;min-width:760px}.parameter-scroll{overflow-x:auto}.pm-cell{background:#242424;border:1px solid #393939;padding:9px;border-radius:7px;color:#d6d1c8}.pm-cell.label{background:#321d1b;color:#ffb1aa;font-weight:800}.pm-cell b{display:block;color:#fff;font-size:12px}.pm-cell span{font-size:11px;color:#aaa}.color-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:9px}.color-key{display:grid;grid-template-columns:28px 1fr;gap:9px;align-items:start;background:#242424;border-radius:10px;padding:12px;border:1px solid #3c3c3c}.lamp{width:20px;height:20px;border-radius:50%;margin-top:2px;box-shadow:0 0 12px currentColor}.lamp.red{background:#ee342b;color:#ee342b}.lamp.orange{background:#ef8730;color:#ef8730}.lamp.green{background:#60dc73;color:#60dc73}.lamp.blue{background:#2ea9e7;color:#2ea9e7}.lamp.violet{background:#9d63e8;color:#9d63e8}.lamp.turquoise{background:#54e2d2;color:#54e2d2}.lamp.blink{animation:blink 1s steps(2) infinite}@keyframes blink{50%{opacity:.15}}.color-key b{display:block}.color-key span{color:#aaa;font-size:12px}.note-box{margin-top:10px;background:#2f2b21;border:1px solid #6d5c2d;color:#eadcae;padding:11px;border-radius:9px}.beat-shell{display:grid;grid-template-columns:190px 1fr;gap:12px}.beat-tabs{background:#242424;border:1px solid #3e3e3e;border-radius:12px;padding:10px}.beat-tab{width:100%;text-align:left;border:0;background:transparent;color:#bbb;border-radius:8px;padding:10px}.beat-tab.active{background:var(--red);color:white}.beat-view{background:#242424;border:1px solid #3e3e3e;border-radius:12px;padding:15px;overflow-x:auto}.beat-meta{color:#aaa;margin-bottom:10px}.grid16{display:grid;grid-template-columns:90px repeat(16,minmax(27px,1fr));gap:4px;min-width:720px;align-items:center}.grid16 .ghead{text-align:center;color:#888;font-size:10px}.track-name{font-size:11px;color:#d9d3cb}.hit{height:27px;border-radius:4px;background:#333;border:1px solid #454545}.hit.on{background:#c82f27;border-color:#f25950}.hit.accent{background:#e7812e;border-color:#ffb262}.bass-steps{margin-top:13px;border-top:1px solid #444;padding-top:12px}.bass-steps code,.workflow-grid code{background:#363636;padding:2px 5px;border-radius:4px;color:#ffb7b0}.workflow-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}.workflow-grid ol{padding-left:20px}.workflow-grid li{margin:6px 0;color:#d0cac1}.screen-guide{display:grid;grid-template-columns:220px 1fr;gap:12px}.screen-list{background:#242424;border:1px solid #3e3e3e;border-radius:12px;padding:10px}.screen-btn{display:block;width:100%;border:0;background:transparent;color:#bbb;text-align:left;padding:9px;border-radius:7px}.screen-btn.active{background:#3a3a3a;color:#fff}.screen-detail{background:#242424;border:1px solid #3e3e3e;border-radius:12px;padding:16px}.oled-large{background:#071415;border:5px solid #3a3936;color:#87f1d4;font:15px/1.35 ui-monospace,SFMono-Regular,Consolas,monospace;padding:16px;min-height:122px;white-space:pre;overflow:auto;box-shadow:inset 0 0 22px #000;margin-bottom:12px}.path{color:#ffaea7;font-weight:800}.screen-detail h3{margin:4px 0}.screen-detail p{color:#c8c2b9}.learn{margin-top:26px;display:grid;grid-template-columns:280px 1fr;gap:16px}.learn-nav,.lesson{background:#242424;border:1px solid #3e3e3e;border-radius:14px;padding:16px}.learn-nav h2,.lesson h2{margin:0 0 12px}.lesson-btn{display:block;width:100%;text-align:left;border:0;background:transparent;color:#bdb7ae;padding:10px;border-radius:8px}.lesson-btn.active{background:var(--red);color:#fff}.lesson ol{padding-left:22px}.lesson li{margin:9px 0;color:#d6d1c8}.lesson code{background:#363636;padding:2px 5px;border-radius:4px;color:#ffb7b0}.tip{border-top:1px solid #444;margin-top:14px;padding-top:12px;color:#aaa}.sources{margin:24px 0 6px;color:#aaa;font-size:12px}.sources a{margin-right:14px}
+    @media(max-width:1100px){.workspace{grid-template-columns:1fr}.inspector{position:static}.learn,.beat-shell,.screen-guide{grid-template-columns:1fr}.hero{align-items:flex-start}.hero-note{display:none}.beat-tabs{display:flex;overflow-x:auto}.beat-tab{width:auto;white-space:nowrap}.panel-coach{grid-template-columns:1fr 1fr}.keyboard-hint{grid-column:1/-1;border-left:0;border-top:1px solid #454545;padding:8px 0 0}}
+    @media(max-width:650px){.shell{padding:14px}.legend{margin-left:0;width:100%}.inspector{padding:15px}}
+  </style>
+</head>
+<body>
+<main class="shell">
+  <header class="hero">
+    <div><div class="eyebrow">Clickable front-panel map · first-pass guide</div><h1>Alpha Base Mk II, decoded</h1><p>Choose how you are touching the machine, then click any knob, key, or step. The panel explains the normal action, the modified action, and the state that changes its meaning.</p></div>
+    <div class="hero-note">This teaches the interface; it does not make sound or replace checking the current OS documentation.</div>
+  </header>
+
+  <section class="toolbar" aria-label="Interaction modifier">
+    <strong>How are you touching it?</strong>
+    <div class="mode-group">
+      <button class="mode active" data-mode="normal">Normal click / turn</button>
+      <button class="mode" data-mode="shift">Press SHIFT</button>
+      <button class="mode" data-mode="rec">Hold REC PARA</button>
+      <button class="mode" data-mode="accent">Hold selected pad · accent</button>
+      <button class="mode" data-mode="lock">Hold step · add lock</button>
+    </div>
+    <div class="legend"><i></i> selected <i class="mod"></i> modified action</div>
+  </section>
+
+  <div class="workspace">
+    <div class="machine-wrap" aria-label="Simplified Alpha Base Mk II front panel">
+      <section class="machine">
+        <div class="brand"><b>JoMoX</b><br>ALPHA BASE <small>mk II</small></div>
+        <div class="top-grid">
+          <div class="matrix" id="matrix"></div>
+          <div class="screen-area">
+            <div class="analog">
+              <button class="knob control" data-id="input"><span class="cap"></span><small>INPUT GAIN</small></button>
+              <button class="knob control" data-id="phones"><span class="cap"></span><small>PHONES</small></button>
+              <button class="knob control" data-id="mix"><span class="cap"></span><small>MIX VOLUME</small></button>
+            </div>
+            <div class="screen" aria-live="polite"><b id="screen-title">PARAMETER MODE</b><span id="screen-line">Click a control</span><span id="screen-state">KIT 000 · PAT 01 · BAR A</span></div>
+            <button class="knob data control" data-id="data"><span class="cap"></span><small>DATA</small></button>
+            <div class="cursor-grid" id="menu-controls"></div>
+          </div>
+        </div>
+
+        <div class="panel-coach" aria-live="polite">
+          <div><span class="coach-tag" id="coach-tag">LIVE PANEL HELP</span><strong id="coach-title">The virtual panel now responds</strong><p id="coach-copy">Use the actual button path. The OLED, LEDs and this explanation will change without making you scroll away.</p></div>
+          <div class="live-color" id="live-color"><i class="mini-lamp neutral"></i><span><b>No LED event yet</b><small>Program a step or press START.</small></span></div>
+          <div class="keyboard-hint"><b>Keyboard:</b> Shift = press the gear’s SHIFT/CANCEL once. It stays armed until you choose a step or press Shift again.</div>
+        </div>
+
+        <div class="function-row" id="function-controls"></div>
+
+        <div class="sequencer">
+          <button class="transport control" data-id="start">START</button>
+          <div id="steps" style="display:contents"></div>
+          <button class="transport control" data-id="shift">SHIFT</button>
+          <button class="transport control" data-id="stop">STOP</button>
+          <div class="steps-label">Each step selects/edits rhythm normally · the red label below each step is its SHIFT menu</div>
+          <button class="transport control" data-id="enter">ENTER</button>
+        </div>
+        <div class="pads" id="pads"></div>
+      </section>
+    </div>
+
+    <aside class="inspector" aria-live="polite">
+      <div class="kind" id="detail-kind">Start here</div>
+      <h2 id="detail-title">Click the panel</h2>
+      <p id="detail-summary">The same physical control can mean different things depending on EDIT/TRIG, SEQ, PAGE A/B, SHIFT, and REC PARA. This guide calls that context out explicitly.</p>
+      <div id="detail-actions">
+        <div class="action"><strong>Best mental model</strong>The step keys are patterns when Edit is off, notes when Edit is on, and menus when Shift is held.</div>
+        <div class="action shift"><strong>Knob clicks</strong>Encoders 1–11 mute their matching instruments. Hold REC PARA and click one to solo it.</div>
+      </div>
+      <div class="page-ref" id="detail-ref">Manual: chapters 2.2, 3 and 12</div>
+    </aside>
+  </div>
+
+  <section class="section" id="voices">
+    <div class="section-head"><div><div class="eyebrow">What the eleven pads actually are</div><h2>Sound engines</h2></div><p>The pad chooses a track; the selected track decides what the 4×4 knob matrix means. The printed black and red labels are alternate parameter maps, not sixteen permanently fixed knobs.</p></div>
+    <div class="cards">
+      <article class="info-card engine-card analog"><span class="tag">Analog voice · pad 1</span><h3>Kick Drum</h3><p>A dedicated analog kick: oscillator tuning, pitch sweep, decay, harmonics, attack/pulse/noise, EQ, compression, metallic noise, gate time and LFO.</p><small>Good for: sub bass drums, knocking electro kicks, tuned tom/bass notes.</small></article>
+      <article class="info-card engine-card analog"><span class="tag">Analog voice · pad 2</span><h3>MBrane</h3><p>Two coupled membrane oscillators. Their pitches, damping and two-way coupling create snares, toms, claves, bells, metallic percussion and even kicks.</p><small>Good for: snares that are more than a sample; tune Coupl1/Coupl2 and noise together.</small></article>
+      <article class="info-card engine-card hybrid"><span class="tag">Hybrid analog/sample · pads 3–4</span><h3>Closed + Open Hi-Hat</h3><p>A sample and metallic noise feed a specialized analog hi-hat filter, then an analog VCA. LP Cut removes top end, HP Cut removes lows, resonance emphasizes the cutoff, and the VCA envelope shapes length.</p><small>REC PARA + encoder 15 toggles choke behavior: an open hat wins over a closed hat on the same step.</small></article>
+      <article class="info-card engine-card hybrid"><span class="tag">Hybrid analog/sample · pads 5–8</span><h3>Clap, Rim, Crash, Ride</h3><p>Each mixes a sample with metallic noise, then passes through its own resonance-capable 2-pole multimode analog filter and VCA. The filter can be LP, HP or BP.</p><small>With high resonance/self-oscillation these become small synth voices for toms, zaps, claves or filtered bass samples.</small></article>
+      <article class="info-card engine-card digital"><span class="tag">Digital sample voices · pads 9–10</span><h3>X Sample 1 + 2</h3><p>Pure digital sample tracks with wide pitch range, start/stop, loop, reverse and LFO modulation of pitch, volume and filter target. They can also record external audio into RAM.</p><small>Best route for a bass one-shot, vocal hit, texture or melodic sample. Unlike pads 3–8, these do not pass through the dedicated analog filters.</small></article>
+      <article class="info-card engine-card fm"><span class="tag">4-operator digital FM · pad 11</span><h3>FM Synth</h3><p>A small four-operator, up-to-six-voice FM synth. It can make metallic percussion, basses, leads and chords; an external MIDI keyboard can play it polyphonically.</p><small>For the internal sequencer, program FM trigger steps and use SEQ pitch offsets for a melody.</small></article>
+    </div>
+  </section>
+
+  <section class="section" id="parameter-labels">
+    <div class="section-head"><div><div class="eyebrow">The small print under the knobs</div><h2>How to read the parameter layers</h2></div><p>Choose an instrument, use KIT/SEQ to reach parameter mode, turn any encoder, and use PAGE A/B for its alternate label. LEFT/RIGHT moves through rows without touching a value.</p></div>
+    <div class="parameter-scroll"><div class="parameter-map">
+      <div class="pm-cell label">Matrix row</div><div class="pm-cell"><b>Encoder 1 / 5 / 9 / 13</b></div><div class="pm-cell"><b>Encoder 2 / 6 / 10 / 14</b></div><div class="pm-cell"><b>Encoder 3 / 7 / 11 / 15</b></div><div class="pm-cell"><b>Encoder 4 / 8 / 12 / 16</b></div>
+      <div class="pm-cell label">Row 1 · Sample page</div><div class="pm-cell"><b>Pitch / Cents</b><span>Coarse or fine sample tuning</span></div><div class="pm-cell"><b>Start / Loop</b><span>Start point or loop amount</span></div><div class="pm-cell"><b>Stop / Loop Mod</b><span>End point or loop modulation</span></div><div class="pm-cell"><b>Select / Reverse</b><span>Sample slot or reverse on/off</span></div>
+      <div class="pm-cell label">Row 2 · VCA / filter envelope</div><div class="pm-cell"><b>Attack</b><span>How quickly volume/filter opens</span></div><div class="pm-cell"><b>Decay</b><span>Fall time after attack</span></div><div class="pm-cell"><b>Sustain</b><span>Held level</span></div><div class="pm-cell"><b>Release</b><span>Fade after the gate ends</span></div>
+      <div class="pm-cell label">Row 3 · Filter</div><div class="pm-cell"><b>LP / Cutoff</b><span>Hat low-pass or multimode cutoff</span></div><div class="pm-cell"><b>HP / Resonance</b><span>Hat high-pass or filter emphasis</span></div><div class="pm-cell"><b>Res / Env Amount</b><span>Hat resonance or envelope depth</span></div><div class="pm-cell"><b>Routing / Metal Noise</b><span>Filter type/path or noise amount</span></div>
+      <div class="pm-cell label">Row 4 · LFO / output</div><div class="pm-cell"><b>LFO Wave / Trig</b><span>Shape or restart behavior</span></div><div class="pm-cell"><b>LFO Rate / VCA Mod</b><span>Speed or tremolo depth</span></div><div class="pm-cell"><b>Tune / Cutoff Mod</b><span>Pitch or filter modulation depth</span></div><div class="pm-cell"><b>Volume / Accent</b><span>Track level or accent strength</span></div>
+    </div></div>
+    <div class="note-box"><strong>Hi-hat shortcut:</strong> for a darker hat, lower LP Cut; for a thinner/brighter hat, raise HP Cut. VCA Decay/Release controls how short or open it feels. The dedicated hat filter and the Clap/Rim/Crash/Ride multimode filters are different circuits and their screen labels differ.</div>
+  </section>
+
+  <section class="section" id="colors">
+    <div class="section-head"><div><div class="eyebrow">What the RGB LEDs are telling you</div><h2>Color decoder</h2></div><p>Color meaning depends on whether you are looking at the step row or the encoder-matrix LEDs. Brightness and blinking carry meaning too.</p></div>
+    <div class="color-grid">
+      <div class="color-key"><i class="lamp red"></i><div><b>Red · programmed step</b><span>A normal trigger exists at this position. On encoder LEDs 1–11, blinking red means that instrument is muted.</span></div></div>
+      <div class="color-key"><i class="lamp orange"></i><div><b>Orange · accent</b><span>The programmed trigger is accented. Hold the instrument pad and press the step to switch red ↔ orange.</span></div></div>
+      <div class="color-key"><i class="lamp green"></i><div><b>Green · playhead</b><span>The moving green point is the current sequencer position. It also runs through the 4×4 matrix in pitch-sequence view.</span></div></div>
+      <div class="color-key"><i class="lamp blue"></i><div><b>Blue · lock layer 2</b><span>A step contains a second different parameter edit lock. The display also reports “Step edit lock 2.”</span></div></div>
+      <div class="color-key"><i class="lamp violet"></i><div><b>Violet · lock layer 3</b><span>A third different parameter lock is stored on that step. Accent/non-accent still changes brightness.</span></div></div>
+      <div class="color-key"><i class="lamp turquoise"></i><div><b>Turquoise · recorded track lock</b><span>Seen when REC PARA records a continuous knob move across the bar; even non-trigger steps can receive locks.</span></div></div>
+      <div class="color-key"><i class="lamp red blink"></i><div><b>Blinking · special state</b><span>Context matters: an encoder blink means mute; a step blink can indicate roll/flam; all 16 flashing means Shift is waiting for a function.</span></div></div>
+    </div>
+    <div class="note-box"><strong>About white or pale blue:</strong> the OS 1.0 manual does not define a separate normal “white” step state. A bright turquoise/blue/violet RGB mix can look white in photos or at high brightness. Use the display text (“Step edit lock 1–3”) and whether the light moves or blinks to confirm it.</div>
+  </section>
+
+  <section class="section" id="shift-workflows">
+    <div class="section-head"><div><div class="eyebrow">The operations people most often need</div><h2>Shift workflows, without guesswork</h2></div><p>Press SHIFT once, then the numbered step. Unless noted otherwise, turn DATA to change a value and press ENTER to confirm; SHIFT/CANCEL backs out.</p></div>
+    <div class="workflow-grid">
+      <article class="info-card"><h3>Clear the entire pattern</h3><ol><li>Select the pattern with EDIT/TRIG off.</li><li>Press <code>SHIFT → Step 2</code>.</li><li>At “Clear Pattern?” press <code>ENTER</code>.</li><li>This clears the temporary pattern buffer; avoid STO PAT if you want the old stored pattern back.</li></ol></article>
+      <article class="info-card"><h3>Clear only one sound/track</h3><ol><li>Turn EDIT/TRIG on and choose the instrument.</li><li>For each available BAR A–D, press every lit step to turn it off.</li><li><code>REC PARA + locked step</code> disables/re-enables locks; REC PARA + encoder 12 permanently erases all locks on that track.</li><li>The manual does not document a one-command “clear selected track,” so do not use SHIFT+2—it clears the whole pattern.</li></ol></article>
+      <article class="info-card"><h3>Make a pattern load its kit</h3><ol><li>Hold <code>REC PARA</code> and click <code>encoder 16</code> to enable Preset–Pattern Link.</li><li>Load the desired kit with KIT/SEQ → DATA → ENTER.</li><li>Select/edit the pattern, then store it with <code>STO PAT</code> twice or <code>SHIFT + 3</code>.</li><li>The currently loaded kit is linked when the pattern is stored; recalling the pattern now recalls that kit.</li></ol></article>
+      <article class="info-card"><h3>Copy a bar and make a variation</h3><ol><li>EDIT/TRIG on; choose the track and source BAR.</li><li>Press <code>SHIFT → Step 11</code>.</li><li>Use BAR to choose destination B/C/D.</li><li>Press ENTER, then edit a few steps in the copied bar.</li></ol></article>
+      <article class="info-card"><h3>Set track length or polyrhythm</h3><ol><li>EDIT on + choose track for one-track length; EDIT off for all tracks.</li><li>Press <code>SHIFT → Step 5</code> or LA STEP.</li><li>Turn DATA from 1–64 and press ENTER.</li><li>BAR exposes each 16-step chunk allowed by that length.</li></ol></article>
+      <article class="info-card"><h3>Store vs copy</h3><ol><li><code>STO KIT</code>/<code>STO PAT</code> twice quick-stores to the current location.</li><li><code>SHIFT + 1</code>/<code>SHIFT + 3</code> opens a destination selector.</li><li>Turn DATA for another destination, then ENTER to copy/store.</li><li>Before the final confirmation, SHIFT/CANCEL aborts.</li></ol></article>
+    </div>
+  </section>
+
+  <section class="section" id="screens">
+    <div class="section-head"><div><div class="eyebrow">What am I looking at?</div><h2>Screen navigator</h2></div><p>Select a common display. The mock OLED shows the important structure rather than trying to reproduce every character exactly.</p></div>
+    <div class="screen-guide"><div class="screen-list" id="screen-list"></div><article class="screen-detail" id="screen-detail"></article></div>
+  </section>
+
+  <section class="learn">
+    <nav class="learn-nav" aria-label="Beginner workflows"><h2>Learn by doing</h2><div id="lesson-nav"></div></nav>
+    <article class="lesson" id="lesson"></article>
+  </section>
+
+  <section class="section" id="beats">
+    <div class="section-head"><div><div class="eyebrow">Seven patterns you can enter immediately</div><h2>Beat recipes</h2></div><p>Numbers are the 16 step buttons in BAR A at Scale A. Red squares are normal hits; orange squares are accents. These are starting points, not rigid genre rules.</p></div>
+    <div class="beat-shell"><div class="beat-tabs" id="beat-tabs"></div><div class="beat-view" id="beat-view"></div></div>
+  </section>
+
+  <footer class="sources">
+    <strong>Sources:</strong>
+    <a href="https://www.jomox.de/upload/manuals/AlphaBaseMk2_E.pdf" target="_blank" rel="noreferrer">Official Alpha Base Mk II manual (OS 1.0 preliminary)</a>
+    <a href="https://www.jomox.de/shop/product_details.php?cur=1&amp;lang=en&amp;product=alpha-base-mk-ii&amp;product_id=66" target="_blank" rel="noreferrer">Official product page</a>
+    <span>Independent learning aid; not affiliated with JoMoX.</span>
+  </footer>
+</main>
+
+<script>
+const instruments=['Kick Drum','MBrane','Closed Hi-Hat','Open Hi-Hat','Clap','Rim Shot','Crash','Ride','X Sample 1','X Sample 2','FM Synth'];
+const shiftFns=['Store Kit','Clear Pattern','Store Pattern','Init Kit','Last Step','Shuffle','Realtime Write','Metronome','Stereo Pan','Scale','Bar Copy','Roll / Flam','FX','Single / Multi','Memory Init','Shutdown'];
+const controls={
+  input:{kind:'Analog level',title:'Input Gain',summary:'Sets the gain of the external sampling input.',normal:'Turn to match the incoming source level.',ref:'Manual 3.2.1, p.23'},
+  phones:{kind:'Analog level',title:'Phones',summary:'Controls only the front headphone output.',normal:'Turn for a comfortable headphone level.',ref:'Manual 3.2.2, p.23'},
+  mix:{kind:'Analog level',title:'Mix Volume',summary:'Controls the stereo mix output. It does not change the individual outputs.',normal:'Turn to set the main stereo output level.',ref:'Manual 3.2.3, p.23'},
+  data:{kind:'Menu encoder',title:'DATA encoder',summary:'Changes the selected value or browses kits/samples. Its push confirms or loads in relevant menus.',normal:'Turn: change the highlighted value. Click: load the selected kit or sample.',shift:'No fixed Shift+DATA function is documented; use DATA after entering a Shift menu.',ref:'Manual 3.3.1, p.23'},
+  left:{kind:'Menu navigation',title:'LEFT',summary:'Moves the display cursor or moves to the previous parameter row/page in context.',normal:'Press to navigate left through the current display menu.',ref:'Manual 3.3.2, p.23'},
+  right:{kind:'Menu navigation',title:'RIGHT',summary:'Moves the display cursor or moves to the next parameter row/page in context.',normal:'Press to navigate right through the current display menu.',ref:'Manual 3.3.2, p.23'},
+  down:{kind:'Fine value change',title:'DOWN',summary:'Does the same job as DATA, one small step at a time.',normal:'Decrease the selected value; in Kit Select, browse down.',ref:'Manual 3.5.5, p.26'},
+  up:{kind:'Fine value change',title:'UP',summary:'Does the same job as DATA, one small step at a time.',normal:'Increase the selected value; in Kit Select, browse up.',ref:'Manual 3.5.5, p.26'},
+  enter:{kind:'Confirmation',title:'ENTER',summary:'Confirms or enters a displayed setting.',normal:'Press after choosing a value or when the display asks for confirmation.',ref:'Manual 3.6.3, p.27'},
+  shift:{kind:'Modifier / cancel',title:'SHIFT / CANCEL',summary:'Opens the second functions printed under steps 1–16. It also cancels prompts.',normal:'Press once, then press a step key for its red-label function. Press again to abort.',ref:'Manual 3.6.4 and chapter 12'},
+  start:{kind:'Transport',title:'START',summary:'Starts sequencer playback.',normal:'Press to start the pattern. You can continue editing while it runs.',ref:'Manual 3.6.1, p.27'},
+  stop:{kind:'Transport',title:'STOP',summary:'Stops sequencer playback.',normal:'Press to stop playback.',ref:'Manual 3.6.2, p.27'},
+  kit:{kind:'Mode key',title:'KIT / SEQ',summary:'Cycles the display between Kit Select, parameter editing, and pitch-sequence view when SEQ is active.',normal:'Press until the display shows the view you need. In Kit Select, use DATA then click DATA or press ENTER to load.',ref:'Manual 3.3.3 and chapter 4'},
+  disk:{kind:'Menu key',title:'DISK',summary:'Opens the SD-card directory and sample/file functions.',normal:'Press to read the inserted card and enter the disk menu.',ref:'Manual 3.3.4 and chapter 9'},
+  bpm:{kind:'Menu key',title:'BPM / MIDI',summary:'Opens tempo and MIDI settings; BPM is the first item.',normal:'Press, then turn DATA to edit tempo.',ref:'Manual 3.3.5 and chapter 10'},
+  recpara:{kind:'Modifier / recording',title:'REC PARA',summary:'Records live parameter motion in SEQ mode and acts as a modifier for solo and lock management.',normal:'In SEQ mode, use it to record or unlock parameter locks.',rec:'Keep held, then click encoders 1–11 to solo; encoder 12 clears all locks; step 1–15 clears one lock.',warning:'Clearing edit locks cannot be undone.',ref:'Manual 3.1.2–3.1.3 and 3.3.6'},
+  bank:{kind:'Pattern navigation',title:'BANK 1–4',summary:'Cycles through four banks of 16 patterns (64 pattern locations).',normal:'Press to change bank. With EDIT/TRIG off, choose a pattern with step 1–16.',ref:'Manual 3.4.1 and 11.1'},
+  page:{kind:'Parameter navigation',title:'PAGE A / B',summary:'Switches between the A and B parameter sets for the selected instrument.',normal:'Press to expose the other four parameters in the current row.',ref:'Manual 3.4.2, p.24'},
+  last:{kind:'Sequencer hotkey',title:'LA STEP',summary:'Directly opens the current track length setting (1–64 steps).',normal:'Press, turn DATA, then ENTER. Edit on = selected track only; Edit off = all tracks.',ref:'Manual 3.4.3 and 11.2.5'},
+  bar:{kind:'Sequencer navigation',title:'BAR A–D',summary:'Chooses which 16-step slice of a track you are viewing and editing.',normal:'Press to cycle available bars. Track length determines whether B, C, and D are reachable.',ref:'Manual 3.4.4 and 11.2.3'},
+  roll:{kind:'Sequencer hotkey',title:'ROLL / FLAM',summary:'Opens roll/flam programming. Double-click a step in Edit mode to assign the selected flam.',normal:'Press to open, turn DATA to choose the pattern, double-click a step, then ENTER.',ref:'Manual 3.4.5 and 12.12'},
+  stokit:{kind:'Save key',title:'STO KIT',summary:'Quick-stores the current kit to flash memory.',normal:'Press once: the machine warns that the buffer was edited. Press STO KIT again to store, or SHIFT/CANCEL to discard and reload.',warning:'The second press overwrites the selected kit.',ref:'Manual 3.4.6, p.25'},
+  stopat:{kind:'Save key',title:'STO PAT',summary:'Quick-stores the current pattern to flash memory.',normal:'Press once for the buffer warning; press STO PAT again to store, or SHIFT/CANCEL to discard and reload.',warning:'Changing pattern before saving discards the edit buffer.',ref:'Manual 3.4.7 and 11.2.9'},
+  seq:{kind:'Sequencer mode',title:'SEQ',summary:'Enables pitch sequences and parameter-lock playback. Off gives classic drum-trigger behavior.',normal:'Press to toggle pitch/edit-lock playback. In pitch view, the 4×4 encoders correspond to the 16 steps.',ref:'Manual 3.5.1 and 11.3'},
+  chain:{kind:'Pattern mode',title:'CHAIN',summary:'Links consecutive patterns for playback.',normal:'With Edit off, turn CHAIN on, hold the first pattern step and press the last pattern step.',ref:'Manual 3.5.2 and 11.1.3'},
+  xrec:{kind:'Sampling',title:'X-REC',summary:'Activates recording from the external input for the X Sample tracks.',normal:'Use with X Sample 1 or 2 and the sampling workflow; INPUT GAIN sets the recording level.',ref:'Manual 3.5.3 and 7.3'},
+  edit:{kind:'Core mode',title:'EDIT / TRIG',summary:'The crucial context switch: on selects tracks and edits their steps; off lets instrument keys trigger sounds and step keys recall patterns.',normal:'Toggle on → press an instrument pad → set/clear its steps. Toggle off → pads audition voices; step keys select patterns.',ref:'Manual 2.2.3–2.2.4 and 3.5.4'}
+};
+
+const matrix=document.getElementById('matrix');
+for(let i=1;i<=16;i++){
+  const name=i<=11?instruments[i-1]:i===12?'Edit lock clear':i===13?'FX page':i===14?'FX kill':i===15?'Pattern quick store':i===16?'Multi temp store':'Encoder';
+  const b=document.createElement('button'); b.className='enc control'; b.dataset.id='enc'+i;
+  b.innerHTML=`<span class="cap"></span><small>${name}</small><span class="num">${i}<span class="led"></span></span>`; matrix.appendChild(b);
+  controls['enc'+i]={kind:'Push encoder',title:`Encoder ${i}${i<=11?' · '+instruments[i-1]:''}`,summary:'One cell of the 4×4 context-sensitive encoder matrix. Turning follows the four parameters currently visible on screen.',normal:i<=11?`Turn: edit the parameter in this matrix position. Click: mute/unmute ${instruments[i-1]}; its LED blinks when muted.`:i===12?'Turn: edit the displayed parameter. REC PARA + click clears all edit locks on the selected track.':i===13?'Turn: edit the displayed parameter. Click toggles the FX page.':i===14?'Turn: edit the displayed parameter. Click kills/restores the effects.':i===15?'Turn: edit the displayed parameter. Click is documented as Pattern Quick Store.':`Turn: edit the displayed parameter. In Multi Mode, click temporarily stores the Multi set.`,rec:i<=11?`REC PARA + click: solo ${instruments[i-1]} (mutes the other instruments).`:i===12?'REC PARA + click: erase every edit lock on the current track.':i===15?'REC PARA + click: toggle closed/open hi-hat choke mode.':i===16?'REC PARA + click: toggle automatic Kit–Pattern linking.':'No special REC PARA combination is documented here.',shift:'SHIFT does not remap the matrix globally; it opens the step-key second-function layer.',warning:i===12?'Erasing every edit lock cannot be undone.':'',ref:i<=11?'Manual 3.1.1–3.1.2, pp.21–22':'Manual 3.1.3, p.22'};
+}
+
+const menu=[['recpara','REC PARA'],['kit','KIT/SEQ'],['disk','DISK'],['bpm','BPM/MIDI'],['left','◀ LEFT'],['right','RIGHT ▶']];
+document.getElementById('menu-controls').innerHTML=menu.map(([id,label])=>`<button class="small-btn wide control" data-id="${id}" aria-label="${label}"><span class="button-label">${label}</span><span class="button-dot" aria-hidden="true"></span></button>`).join('');
+const funcs=[['bank','BANK'],['page','PAGE A/B'],['last','LA STEP'],['bar','BAR'],['roll','ROLL/FLAM'],['stokit','STO KIT'],['stopat','STO PAT'],['seq','SEQ'],['chain','CHAIN'],['xrec','X-REC'],['edit','EDIT/TRIG'],['down','DOWN'],['up','UP']];
+document.getElementById('function-controls').innerHTML=funcs.map(([id,label])=>`<button class="fn control" data-id="${id}">${label}</button>`).join('');
+document.getElementById('steps').innerHTML=shiftFns.map((name,i)=>`<button class="step control" data-id="step${i+1}"><span class="step-light"></span><span class="n">${i+1}</span><span class="shift-name">${name}</span></button>`).join('');
+document.getElementById('pads').innerHTML=instruments.map((name,i)=>`<button class="pad control" data-id="pad${i+1}">${name}</button>`).join('');
+
+for(let i=1;i<=16;i++) controls['step'+i]={kind:'Step key · '+i,title:`Step ${i} / SHIFT ${i}`,summary:'This key has a rhythm/pattern job in normal use and a red-strip menu when SHIFT is active.',normal:'EDIT/TRIG off: recall pattern '+i+' in the current bank. EDIT/TRIG on: set or clear step '+i+' for the selected track.',shift:`SHIFT + Step ${i}: open ${shiftFns[i-1]}. ${i===5?'Edit on affects the selected track; Edit off applies Last Step to all tracks.':i===15?'This initializes RAM buffers; it does not touch flash unless you later store.':i===16?'This writes RAM buffers to flash, then asks you to switch the machine off.':''}`,rec:i<=15?`REC PARA + Step ${i}: disable an edit lock at this step in SEQ mode; repeat to reactivate it.`:'No REC PARA + Step 16 lock toggle is documented.',warning:i===2?'Clear Pattern erases the edit buffer; the stored pattern remains until you overwrite it.':i===4?'Init Kit clears the kit edit buffer; the stored kit remains until you overwrite it.':i===15?'Memory Init clears the RAM working buffers. Read the display carefully before confirming.':i===16?'Shutdown stores RAM buffers to flash. Wait for “Turn off” before powering down.':'',ref:i<17?'Manual chapter 12, pp.107–117':'Manual 3.6.6'};
+for(let i=1;i<=11;i++) controls['pad'+i]={kind:'Instrument key',title:instruments[i-1],summary:'One of the eleven instrument trigger/select keys.',normal:'EDIT/TRIG off: play/audition this instrument. EDIT/TRIG on: select its track so the step row and encoder matrix edit it.',shift:'Hold this instrument key (not SHIFT) and press a programmed step to toggle that step’s accent.',ref:'Manual 2.2.4, 2.2.11 and 3.6.7'};
+
+const beatRecipes=[
+ {name:'Trip-hop',bpm:'86 BPM · Scale A · lazy one-bar pocket',tracks:[
+  ['Kick',[1,7,11],[11]],['MBrane / Snare',[5,13],[13]],['Closed Hat',[3,7,11,15],[]],['Rim',[10],[]],['X Sample 1 bass',[1,7,11,14],[14]]],
+  bass:'Load a short, sustained bass one-shot on X Sample 1. Program steps 1, 7, 11 and 14. Press SEQ, use KIT/SEQ to reach Pitch Sq, then turn matrix encoders 1, 7, 11 and 14 to make a four-note phrase. Keep the offsets small; add Shuffle with SHIFT + 6 around 3–5.'},
+ {name:'Electro',bpm:'122 BPM · Scale A · syncopated kick/snare',tracks:[
+  ['Kick',[1,4,7,9,12,15],[15]],['MBrane / Snare',[5,13],[]],['Clap',[5,13],[13]],['Closed Hat',[3,7,11,15],[]],['FM Synth',[1,4,7,10,12,15],[10]]],
+  bass:'Select FM Synth, choose a simple low-ratio patch, and enter triggers on 1, 4, 7, 10, 12 and 15. Turn SEQ on and adjust the matching pitch encoders for a robotic bass phrase. Try one parameter lock on FM amount: hold a step and turn the desired FM parameter.'},
+ {name:'House / Techno',bpm:'126 BPM house or 132 BPM techno · four-on-the-floor',tracks:[
+  ['Kick',[1,5,9,13],[1,9]],['Clap',[5,13],[]],['Closed Hat',[2,4,6,8,10,12,14,16],[]],['Open Hat',[3,7,11,15],[7,15]],['X Sample 2 stab',[4,10,12,16],[12]]],
+  bass:'For a house stab, put a chord or synth stab sample on X Sample 2 and pitch steps 4, 10, 12 and 16 in Pitch Sq. For techno, use a shorter bass sample, reduce VCA release, and record cutoff movement with REC PARA on a hybrid sample track.'},
+ {name:'Synthwave',bpm:'104 BPM · straight, cinematic pulse',tracks:[
+  ['Kick',[1,9],[1]],['MBrane / Snare',[5,13],[13]],['Closed Hat',[3,7,11,15],[]],['Open Hat',[8,16],[16]],['FM Synth',[1,3,6,8,9,11,14,16],[1,9]]],
+  bass:'Choose a dark FM bass patch and program the shown FM steps. Turn SEQ on, press KIT/SEQ until Pitch Sq appears, then use encoders 1–16 to outline a minor-octave pattern. Try pitches 0, +3, +7 and +12 semitones; keep the kick sparse so the bass has room.'},
+ {name:'EBM',bpm:'124 BPM · rigid industrial drive',tracks:[
+  ['Kick',[1,5,9,13],[1,9]],['MBrane / Snare',[5,13],[5,13]],['Closed Hat',[3,7,11,15],[]],['Clap',[6,14],[]],['X Sample 1 bass',[1,4,7,9,12,15],[9,15]]],
+  bass:'Load a short distorted bass one-shot into X Sample 1. Tune the active steps in Pitch Sq around root, octave and flattened seventh. Add one or two locks by holding a bass step and turning cutoff or decay; the blue/violet LEDs show extra lock layers.'},
+ {name:'Breakbeat',bpm:'138 BPM · chopped, syncopated break',tracks:[
+  ['Kick',[1,7,11,15],[11]],['MBrane / Snare',[5,10,13],[5,13]],['Closed Hat',[2,4,6,8,10,12,14,16],[8,16]],['Rim',[3,12],[]],['X Sample 2 chop',[1,4,7,10,13,15],[10]]],
+  bass:'Put a short break or vocal chop on X Sample 2 and vary its Pitch Sq values on steps 1, 4, 7, 10, 13 and 15. Reverse one variation from the sample parameter page, or shorten Start/Stop for tighter fragments.'},
+ {name:'Hip-hop',bpm:'92 BPM · head-nod pocket',tracks:[
+  ['Kick',[1,7,12],[1,12]],['MBrane / Snare',[5,13],[13]],['Closed Hat',[3,6,8,11,14,16],[16]],['Clap',[13],[]],['X Sample 1 bass',[1,7,10,12,15],[12]]],
+  bass:'Load a round bass note into X Sample 1 and match the trigger steps shown. In Pitch Sq, start with root on 1 and 12, a lower note on 7, and a fifth on 10 or 15. Add Shuffle with SHIFT → Step 6, beginning gently around 2–4.'}
+];
+function renderBeat(i){
+ const b=beatRecipes[i], rows=b.tracks.map(([name,hits,acc])=>`<div class="track-name">${name}</div>${Array.from({length:16},(_,n)=>`<i class="hit ${hits.includes(n+1)?(acc.includes(n+1)?'accent':'on'):''}" aria-label="${name} step ${n+1}${hits.includes(n+1)?' on':' off'}"></i>`).join('')}`).join('');
+ document.querySelectorAll('.beat-tab').forEach((x,n)=>x.classList.toggle('active',n===i));
+ document.getElementById('beat-view').innerHTML=`<h3>${b.name}</h3><div class="beat-meta">${b.bpm}</div><div class="grid16"><div></div>${Array.from({length:16},(_,n)=>`<div class="ghead">${n+1}</div>`).join('')}${rows}</div><div class="bass-steps"><strong>Bass / melody route:</strong> ${b.bass}<br><br><strong>Enter it:</strong> EDIT/TRIG on → select a track → press the numbered red/orange positions. To make an orange accent, hold that instrument pad while pressing its step.</div>`;
+}
+document.getElementById('beat-tabs').innerHTML=beatRecipes.map((b,i)=>`<button class="beat-tab${i===0?' active':''}" data-beat="${i}">${b.name}</button>`).join('');
+document.getElementById('beat-tabs').addEventListener('click',e=>{const b=e.target.closest('[data-beat]');if(b)renderBeat(+b.dataset.beat)}); renderBeat(0);
+
+const screens=[
+ {name:'Kit overview (your picture)',oled:'AlphaOne      017   127.0\nKD MB CH OH CP RM CR RD X1 X2 FM\n▂  ▅  ▃  ▆  ▂  ▄  ▃  ▅  ▇  ▄  ▆',path:'KIT/SEQ until Kit Select appears',title:'Kit name, number, tempo and voice volumes',body:'The top line shows the kit name, kit number and BPM. The abbreviations are the eleven instruments in pad order; the little vertical bars show their volumes. Turn DATA or use UP/DOWN to browse, then click DATA or press ENTER to actually load the kit.'},
+ {name:'Parameter edit',oled:'K  Tune  Pitch  Decay  Harm\n   064    082    047   031\n        Kick Drum · Page A',path:'EDIT/TRIG on → instrument pad → KIT/SEQ to parameter mode',title:'Four parameters at a time',body:'The first character identifies the instrument. Each matrix row contains four parameters. Turning any encoder jumps the display to that row; PAGE A/B chooses its alternate set and LEFT/RIGHT moves between rows.'},
+ {name:'Pitch sequence',oled:'Pitch Sq        Kick Drum\n▁  x  ▃  x  ▅  x  ▂  x\n▁  x  ▄  x  ▆  x  ▃  x',path:'SEQ on → select track → KIT/SEQ to Pitch Sq',title:'Per-step pitch offsets',body:'Bars are active trigger steps and crosses are empty steps. The 4×4 encoder matrix maps directly to steps 1–16. Only active steps can have their pitch edited here; each display pixel is roughly a semitone (less exact for analog Kick/MBrane), up to two octaves.'},
+ {name:'Edit-lock message',oled:'Step edit lock 2\nCutoff = 096\nTrack: Clap   Step: 05',path:'SEQ on + EDIT on → hold a step → turn a parameter',title:'A parameter value stored on one step',body:'The message reports lock layer 1, 2 or 3. A step can store three different parameter locks in addition to pitch. Blue means layer 2 and violet means layer 3. REC PARA + that step disables/re-enables a single lock; REC PARA + encoder 12 erases all locks on the selected track.'},
+ {name:'Shift menu',oled:'Second Function\nSelect Step 1…16\nAll step LEDs flashing',path:'Press SHIFT/CANCEL',title:'The red-strip menu is waiting',body:'All sixteen step LEDs flash because each step now chooses a second function. Press a numbered step. SHIFT/CANCEL again aborts and returns to the previous screen.'},
+ {name:'Clear pattern',oled:'Clear Pattern?\nConfirm = ENTER\nCancel = SHIFT',path:'SHIFT → Step 2',title:'Clear the complete pattern buffer',body:'ENTER clears the whole pattern edit buffer, not only the selected instrument. The flash-stored pattern remains recoverable until you overwrite it with STO PAT or Shift+3.'},
+ {name:'Store warning',oled:'Buffer edited! Store = Again\nNo = Shift / Cancel',path:'Press STO KIT or STO PAT once',title:'First press warns; second press commits',body:'Press the same store key a second time to write the current location. SHIFT/CANCEL discards the buffered edits and reloads the old stored version.'},
+ {name:'Last Step / length',oled:'Last Step = 32\nTrack: Kick Drum\nTurn DATA · ENTER when done',path:'LA STEP or SHIFT → Step 5',title:'Track length from 1 to 64 steps',body:'EDIT on applies the value only to the selected track; EDIT off applies it to every track. Lengths not divisible by 16 create useful polymetric cycles. BAR selects the visible 16-step segment.'},
+ {name:'BPM / MIDI',oled:'BPM = 126.0\nClock Sync = off\nTurn DATA · LEFT/RIGHT pages',path:'Press BPM/MIDI',title:'Tempo first, MIDI settings on later pages',body:'The first item is always BPM. Turn DATA to change tempo. LEFT/RIGHT reaches clock, transmit/receive and dump settings; consult the MIDI chapter before changing unfamiliar flags.'},
+ {name:'Browse and load a kit',oled:'AlphaOne 018 · 126.0\nKIT SELECT · NOT LOADED\nDATA/UP/DOWN · ENTER=LOAD',path:'KIT/SEQ to Kit Select → turn DATA or UP/DOWN → ENTER',title:'Browsing is not the same as loading',body:'The number changes while you browse, but the kit is loaded only when you click DATA or press ENTER. This helps prevent accidental kit changes.'},
+ {name:'Rename a kit',oled:'AlphaOne 017 · EDIT NAME\nA^phaOne\nLEFT/RIGHT · DATA=LETTER',path:'Kit Select → RIGHT into the name → DATA edits → LEFT/RIGHT moves',title:'The cursor is inside the kit name',body:'RIGHT moves into name editing. DATA or UP/DOWN changes the selected character; LEFT/RIGHT moves the cursor. Store the kit afterward or the new name disappears when another kit is selected.'},
+ {name:'Disk / sample browser',oled:'DISK · WAV FILES\nBASS_01.WAV → X SAMPLE 1\nDATA=BROWSE · ENTER=LOAD',path:'Press DISK → choose a file with DATA → ENTER',title:'Browse the SD card and choose a destination',body:'The disk menu reads the inserted card. Browse with DATA, choose the target sample slot as prompted, and confirm with ENTER.'},
+ {name:'Scale / triplets',oled:'SCALE = A\nA/B STRAIGHT · C/D TRIPLETS\nDATA=A–D · ENTER',path:'SHIFT → Step 10',title:'The timing grid for the sixteen buttons',body:'Scale selects how the sixteen positions are timed. A and B are straight divisions; C and D are triplet layouts. The red/black scale stripes beside START mark the downbeats.'}
+];
+function renderScreen(i,updateMachine=true){const s=screens[i];document.querySelectorAll('.screen-btn').forEach((x,n)=>x.classList.toggle('active',n===i));document.getElementById('screen-detail').innerHTML=`<div class="oled-large">${s.oled}</div><div class="path">Button path: ${s.path}</div><h3>${s.title}</h3><p>${s.body}</p>${updateMachine?'<div class="note-box"><strong>Machine OLED synced:</strong> this screen is also displayed on the virtual machine above.</div>':''}`;if(updateMachine){const lines=s.oled.split('\n');document.getElementById('screen-title').textContent=lines[0]||'';document.getElementById('screen-line').textContent=lines[1]||'';document.getElementById('screen-state').textContent=lines[2]||'';}}
+document.getElementById('screen-list').innerHTML=screens.map((s,i)=>`<button class="screen-btn${i===0?' active':''}" data-screen="${i}">${s.name}</button>`).join('');
+document.getElementById('screen-list').addEventListener('click',e=>{const b=e.target.closest('[data-screen]');if(b)renderScreen(+b.dataset.screen)}); renderScreen(0,false);
+
+const lessons=[
+ {name:'1. Make a beat',title:'Your first pattern',steps:['Press <code>BANK</code> until Bank 2 (or another empty bank) is selected.','Keep <code>EDIT/TRIG</code> off and press a step key to choose a pattern location.','Turn <code>EDIT/TRIG</code> on, then press <code>KICK DRUM</code> to select that track.','Press <code>START</code>, then switch steps 1, 5, 9 and 13 on.','Select another instrument pad and add more steps.','Press <code>STO PAT</code> twice to commit the pattern.'],tip:'Edit on means “the step row edits the selected track.” Edit off means “the step row chooses a pattern.”'},
+ {name:'2. Shape a sound',title:'Edit an instrument without getting lost',steps:['Turn <code>EDIT/TRIG</code> on and select an instrument pad.','Press <code>KIT/SEQ</code> until parameter mode is visible.','Turn an encoder. The display automatically jumps to its row of four parameters.','Press <code>PAGE A/B</code> for the alternate four parameters in that row.','Use <code>LEFT/RIGHT</code> to browse parameter rows deliberately.','Press <code>STO KIT</code> twice if you want the edited sound after power-off.'],tip:'Treat the 4×4 encoders as four rows × four columns. The screen tells you what each row means for the current instrument.'},
+ {name:'3. Add pitch & locks',title:'Make the sequence move',steps:['Program ordinary trigger steps first.','Press <code>SEQ</code> so pitch and edit-lock playback is active.','Use <code>KIT/SEQ</code> to reach the pitch-sequence view.','The 4×4 encoders now line up with steps 1–16; turn a knob to change that step’s pitch.','Use <code>REC PARA</code> in SEQ mode to record live parameter movement.','To disable/re-enable a step’s locks, hold <code>REC PARA</code> and press that step. To permanently erase every lock on the selected track, use REC PARA + encoder 12.'],tip:'If a knob seems to “fight back,” a stored parameter lock may be overriding the live value on that step.'},
+ {name:'4. Save safely',title:'Understand buffers before you experiment',steps:['Sound edits live in a kit edit buffer; rhythm edits live in a pattern edit buffer.','Changing kits or patterns can discard unstored edits.','<code>STO KIT</code> twice quick-stores the selected kit; <code>STO PAT</code> twice quick-stores the selected pattern.','<code>SHIFT + 1</code> and <code>SHIFT + 3</code> open full store/copy menus and let you choose another destination.','At a warning, <code>SHIFT/CANCEL</code> backs out and reloads the old stored version.','Use <code>SHIFT + 16</code> for the documented shutdown routine; wait for the display to say it is safe to turn off.'],tip:'The first store press is a warning, the second is the commit. That is a useful safety rhythm to memorize.'},
+ {name:'5. Mute & perform',title:'The fastest performance controls',steps:['Click encoders 1–11 to mute or unmute their matching instruments.','A blinking encoder LED means that voice is muted.','Hold <code>REC PARA</code> and click an instrument encoder to solo it.','Click encoder 13 to enter/leave the FX page.','Click encoder 14 for an FX kill—useful for breaks.','Use <code>ROLL/FLAM</code>, then double-click a step in Edit mode to place a roll/flam.'],tip:'The push encoders are performance keys as much as editing controls; muting works regardless of the current menu.'}
+];
+
+let mode='normal', editOn=false, seqOn=false, selectedId='', selectedTrack=0, screenMode='param', kitNumber=17;
+let shiftArmed=false, lockTarget=null, playTimer=null, playStep=-1;
+const stepStates=Array(16).fill('off'), lockParams=Array.from({length:16},()=>new Set()), muted=Array(11).fill(false);
+const $=id=>document.getElementById(id);
+function setOLED(title,line,state){$('screen-title').textContent=title;$('screen-line').textContent=line;$('screen-state').textContent=state}
+function setCoach(title,copy,color='neutral',colorTitle='Panel state',colorCopy='Follow the highlighted controls.'){
+  $('coach-title').textContent=title;$('coach-copy').textContent=copy;
+  $('live-color').innerHTML=`<i class="mini-lamp ${color}"></i><span><b>${colorTitle}</b><small>${colorCopy}</small></span>`;
+}
+function setMode(next){mode=next;document.querySelectorAll('.mode').forEach(x=>x.classList.toggle('active',x.dataset.mode===mode));document.querySelectorAll('.control').forEach(x=>x.classList.remove('modified'))}
+function renderSteps(){
+  document.querySelectorAll('.step').forEach((el,i)=>{const light=el.querySelector('.step-light');light.className='step-light';const locks=lockParams[i].size;if(locks)light.classList.add(locks===1?'is-lock1':locks===2?'is-lock2':'is-lock3');else if(stepStates[i]==='red')light.classList.add('is-red');else if(stepStates[i]==='orange')light.classList.add('is-orange');if(i===playStep)light.classList.add('is-playhead');el.classList.toggle('shift-wait',shiftArmed)});
+}
+function showPanelScreen(key){
+  screenMode=key;
+  const track=instruments[selectedTrack];
+  const map={
+    kit:[`ALPHAONE ${String(kitNumber).padStart(3,'0')} · 127.0`,'KD MB CH OH CP RM CR RD X1 X2 FM','DATA/UP/DOWN · ENTER=LOAD'],
+    kitname:[`ALPHAONE ${String(kitNumber).padStart(3,'0')} · EDIT NAME`,'A^PHAONE','LEFT/RIGHT · DATA=LETTER'],
+    kitbrowse:[`KIT ${String(kitNumber).padStart(3,'0')} · BROWSING`,'NOT LOADED YET','CLICK DATA OR ENTER TO LOAD'],
+    param:[track.toUpperCase()+' · PAGE A','TUNE  PITCH  DECAY  HARM',`${editOn?'EDIT ON':'EDIT OFF'} · TURN AN ENCODER`],
+    pitch:['PITCH SQ · '+track.toUpperCase(),'▁ x ▃ x ▅ x ▂ x','4×4 KNOBS = STEPS 1–16'],
+    lock:['LOCK SQ · '+track.toUpperCase(),'LOCK 1  CC ---  VALUE ---','RIGHT = NEXT LOCK'],
+    bpm:['BPM / MIDI','BPM = 126.0','TURN DATA · LEFT/RIGHT PAGES'],
+    disk:['DISK / SAMPLE FILES','WAV FOUND · TARGET 001','DATA=BROWSE · ENTER=LOAD'],
+    last:['LAST STEP = 32',editOn?'SELECTED TRACK: '+track:'ALL TRACKS','DATA=1–64 · ENTER=DONE'],
+    roll:['ROLL / FLAM','DOUBLE-CLICK A STEP','DATA=FLAM PATTERN'],
+    storekit:['BUFFER EDITED!','STORE KIT = PRESS AGAIN','SHIFT/CANCEL = RELOAD OLD'],
+    storepat:['BUFFER EDITED!','STORE PAT = PRESS AGAIN','SHIFT/CANCEL = RELOAD OLD'],
+    xrec:['X-REC / SAMPLE','SELECT X SAMPLE 1 OR 2','INPUT GAIN SETS LEVEL'],
+    fx:['EFFECTS PROGRAM','REVERB / DELAY','ENTER = OPEN EFFECT PAGE']
+  };
+  const s=map[key]||map.param;setOLED(...s);
+}
+function pressHardwareShift(){
+  shiftArmed=!shiftArmed;setMode(shiftArmed?'shift':'normal');document.querySelector('[data-id="shift"]').classList.toggle('armed',shiftArmed);renderSteps();
+  if(shiftArmed){setOLED('SECOND FUNCTION','SELECT STEP 1…16','ALL STEP LEDS FLASHING');setCoach('SHIFT is armed','On the hardware this is press-and-release: now press a numbered step. Press SHIFT again to cancel.','red','Flashing red','Waiting for a second-function step.');}
+  else{setOLED('COMMAND ABORTED','SHIFT LAYER CLOSED',`${editOn?'EDIT ON':'EDIT OFF'} · ${seqOn?'SEQ ON':'SEQ OFF'}`);setCoach('SHIFT layer cancelled','Nothing was changed. Press SHIFT once whenever you want the red-strip functions.');}
+}
+function openShiftFunction(i){
+  const name=shiftFns[i-1], screensByStep={1:['STORE KIT 000','DATA = DESTINATION','ENTER = WRITE'],2:['CLEAR PATTERN?','ENTER = CLEAR ALL TRACKS','SHIFT = CANCEL'],3:['STORE PATT 01 · BANK 1','DATA = DESTINATION','ENTER = WRITE'],4:['CLEAR PRESET?','ENTER = INIT KIT','SHIFT = CANCEL'],5:['LAST STEP = 32',editOn?'SELECTED TRACK ONLY':'ALL TRACKS','DATA = 1–64 · ENTER'],6:['SHUFFLE = 000',editOn?'TRACK SHUFFLE':'GLOBAL SHUFFLE','DATA = 0–11 · ENTER'],7:['REALTIME RECORD = OFF','DATA = ON / OFF','ENTER = CONFIRM'],8:['METRONOME = OFF','DATA = ON / OFF','ENTER = CONFIRM'],9:['INSTRUMENT PAN','PRESS ENTER','4×4 KNOBS = VOICES'],10:['SCALE = A','A=16TH · C/D=TRIPLETS','DATA = A–D · ENTER'],11:['COPY A TO B','BAR = DESTINATION','ENTER = COPY'],12:['ROLL / FLAM','DOUBLE-CLICK TO SET ROLL','DATA = PATTERN'],13:['EFFECTS PROGRAM','PRESS ENTER','REVERB / DELAY'],14:['MODE SELECT','SINGLE MODE','DATA = SINGLE / MULTI'],15:['INIT RAM PRESET + SEQ','ENTER = INITIALIZE','FLASH IS UNCHANGED'],16:['SHUT DOWN ALPHA BASE','ENTER = STORE BUFFERS','WAIT FOR TURN-OFF MESSAGE']};
+  setOLED(...screensByStep[i]);shiftArmed=false;setMode('normal');document.querySelector('[data-id="shift"]').classList.remove('armed');renderSteps();
+  setCoach(`SHIFT + Step ${i}: ${name}`,i===2?'This clears the complete pattern edit buffer, not only one sound. ENTER confirms; SHIFT/CANCEL backs out.':i===16?'This stores RAM buffers to flash. Do not power off until the display tells you to.':'The virtual OLED now shows the same kind of menu reached by this path.','red',name,`Second function on Step ${i}.`);
+}
+function setStepColorInfo(i,type){
+ const info={red:['Red · programmed step','This track will trigger at step '+(i+1)+'.'],orange:['Orange · accent','This hit is accented; hold the instrument pad + press the step on hardware.'],lock1:['Turquoise · edit lock 1','One parameter lock is stored on this step.'],lock2:['Blue · edit lock 2','A second different parameter is locked here.'],lock3:['Violet · edit lock 3','Three different parameter locks are stored here.'],green:['Green · moving playhead','This is the current playback position.']}[type];setCoach('LED color shown on the panel',info[1],type==='lock1'?'turquoise':type,info[0],info[1]);
+}
+function handleStep(i){
+  if(shiftArmed||mode==='shift'){openShiftFunction(i+1);return}
+  if(mode==='accent'){
+    stepStates[i]='orange';renderSteps();setStepColorInfo(i,'orange');return;
+  }
+  if(mode==='lock'){
+    lockTarget=i;if(stepStates[i]==='off')stepStates[i]='red';renderSteps();setCoach(`Step ${i+1} is being held for a lock`,'Now click a matrix encoder. Each different encoder adds a lock layer: turquoise, then blue, then violet.','turquoise','Lock target armed','This latch stands in for physically holding the step button.');return;
+  }
+  if(mode==='rec'&&lockParams[i].size){lockParams[i].clear();renderSteps();setCoach(`Locks disabled on Step ${i+1}`,'The hardware toggles that step’s locks with REC PARA + step. REC PARA + encoder 12 permanently erases every lock on the selected track.');return}
+  if(editOn){stepStates[i]=stepStates[i]==='off'?'red':'off';renderSteps();if(stepStates[i]==='red')setStepColorInfo(i,'red');else setCoach(`Step ${i+1} cleared`,'The trigger is off for the selected track.');}
+  else{setOLED(`PATTERN ${String(i+1).padStart(2,'0')} · BANK 1`,'EDIT/TRIG OFF = PATTERN SELECT','PRESS EDIT/TRIG TO EDIT STEPS');setCoach(`Pattern ${i+1} selected`,'With EDIT/TRIG off, the sixteen buttons recall patterns rather than edit notes.');}
+}
+function startPlayback(){
+  if(playTimer)return;document.querySelector('[data-id="start"]').classList.add('active');playStep=-1;playTimer=setInterval(()=>{playStep=(playStep+1)%16;renderSteps()},420);setCoach('Sequencer running','The green outline moves across the step row. Red/orange/lock colors stay underneath it.','green','Green · playhead','Moving current position, not a stored step state.');
+}
+function stopPlayback(){clearInterval(playTimer);playTimer=null;playStep=-1;document.querySelector('[data-id="start"]').classList.remove('active');renderSteps();setCoach('Sequencer stopped','The green playhead disappears; stored step colors remain.');}
+function renderDetail(id){
+  const c=controls[id]; if(!c)return; selectedId=id;
+  document.querySelectorAll('.control').forEach(el=>{el.classList.toggle('selected',el.dataset.id===id);el.classList.remove('modified')});
+  const el=document.querySelector(`[data-id="${id}"]`); if(mode!=='normal')el?.classList.add('modified');
+  $('detail-kind').textContent=c.kind; $('detail-title').textContent=c.title; $('detail-summary').textContent=c.summary;
+  let html=`<div class="action"><strong>${mode==='normal'?'Normal action':mode==='shift'?'Normal action (for comparison)':'Normal action (for comparison)'}</strong>${c.normal||'Context-dependent control.'}</div>`;
+  if(mode==='shift') html+=`<div class="action shift"><strong>With SHIFT</strong>${c.shift||'No dedicated SHIFT combination is documented for this control.'}</div>`;
+  if(mode==='rec') html+=`<div class="action shift"><strong>With REC PARA</strong>${c.rec||'No dedicated REC PARA combination is documented for this control.'}</div>`;
+  if(c.warning)html+=`<div class="warning"><strong>Careful:</strong> ${c.warning}</div>`;
+  $('detail-actions').innerHTML=html; $('detail-ref').textContent=c.ref;
+}
+document.addEventListener('click',e=>{
+  const m=e.target.closest('.mode'); if(m){if(m.dataset.mode==='shift')pressHardwareShift();else{shiftArmed=false;document.querySelector('[data-id="shift"]').classList.remove('armed');setMode(m.dataset.mode);renderSteps();if(mode==='accent')setCoach('Accent modifier latched','This stands in for holding the selected instrument pad. Click a step to make it orange.','orange','Next step: orange','Hardware path: hold instrument pad + press step.');if(mode==='lock')setCoach('Parameter-lock practice','Click a step to hold it, then click different matrix encoders to add lock layers.','turquoise','Lock practice','Requires SEQ on + EDIT on on the hardware.');if(mode==='rec')setCoach('REC PARA held','Click an instrument encoder to solo, a locked step to toggle its locks, or encoder 12 to erase all track locks.');if(mode==='normal')setCoach('Normal interaction','Turn EDIT/TRIG on, select a pad, then click steps to program red triggers.');}renderDetail(selectedId||'shift');return}
+  const c=e.target.closest('.control'); if(!c)return; const id=c.dataset.id;
+  if(id==='shift'){pressHardwareShift();renderDetail(id);return}
+  if(id.startsWith('step')){handleStep(+id.slice(4)-1);renderDetail(id);return}
+  if(id.startsWith('pad')){selectedTrack=+id.slice(3)-1;document.querySelectorAll('.pad').forEach((x,n)=>x.classList.toggle('active',n===selectedTrack));if(editOn)showPanelScreen('param');setCoach(`${instruments[selectedTrack]} selected`,editOn?'The step row and matrix now edit this track.':'EDIT/TRIG is off, so the pad auditions the sound; turn Edit on to program it.');renderDetail(id);return}
+  if(id.startsWith('enc')){const n=+id.slice(3);if(mode==='lock'&&lockTarget!==null){lockParams[lockTarget].add(n);if(lockParams[lockTarget].size>3){const first=[...lockParams[lockTarget]][0];lockParams[lockTarget].delete(first)}renderSteps();setStepColorInfo(lockTarget,lockParams[lockTarget].size===1?'lock1':lockParams[lockTarget].size===2?'lock2':'lock3');showPanelScreen('param')}else if(mode==='rec'&&n===12){lockParams.forEach(s=>s.clear());renderSteps();setCoach('All locks erased on the selected track','This is permanent on the hardware and cannot be undone.')}else if(n<=11&&mode==='normal'){muted[n-1]=!muted[n-1];c.classList.toggle('is-muted',muted[n-1]);setCoach(`${instruments[n-1]} ${muted[n-1]?'muted':'unmuted'}`,muted[n-1]?'Its encoder LED blinks red. Click it again to restore the voice.':'The encoder LED stops blinking and the voice plays again.','red',muted[n-1]?'Blinking red · mute':'Mute cleared','Encoder LEDs 1–11 are the track mutes.')}renderDetail(id);return}
+  if(id==='recpara'){setMode(mode==='rec'?'normal':'rec');setCoach(mode==='rec'?'REC PARA held':'REC PARA released',mode==='rec'?'This is a hold modifier on the hardware. Use it with encoders or locked steps.':'Normal interaction restored.');renderDetail(id);return}
+  if(id==='edit'){editOn=!editOn;c.classList.toggle('active',editOn);showPanelScreen('param');setCoach(`EDIT/TRIG ${editOn?'on':'off'}`,editOn?'Pads select tracks and the step row edits triggers.':'Pads audition sounds and the step row recalls patterns.');}
+  else if(id==='seq'){seqOn=!seqOn;c.classList.toggle('active',seqOn);showPanelScreen(seqOn?'pitch':'param');setCoach(`SEQ ${seqOn?'on':'off'}`,seqOn?'Pitch sequences and parameter locks play; the OLED is now Pitch Sq.':'Only normal instrument pitch and triggers play.');}
+  else if(id==='kit'){const order=seqOn?['kit','param','pitch']:['kit','param'];showPanelScreen(order[(order.indexOf(screenMode)+1)%order.length]);setCoach('KIT/SEQ changed the OLED view',seqOn?'It cycles Kit Select → Parameter Edit → Pitch Sequence.':'It cycles Kit Select ↔ Parameter Edit while SEQ is off.');}
+  else if(id==='bpm')showPanelScreen('bpm');else if(id==='disk')showPanelScreen('disk');else if(id==='last')showPanelScreen('last');else if(id==='roll')showPanelScreen('roll');else if(id==='stokit')showPanelScreen('storekit');else if(id==='stopat')showPanelScreen('storepat');else if(id==='xrec')showPanelScreen('xrec');
+  else if(id==='start')startPlayback();else if(id==='stop')stopPlayback();
+  else if((id==='up'||id==='down')&&(screenMode==='kit'||screenMode==='kitbrowse')){kitNumber=Math.max(0,Math.min(127,kitNumber+(id==='up'?1:-1)));showPanelScreen('kitbrowse');setCoach(`Kit ${kitNumber} selected for preview`,'It is not loaded yet. Press ENTER or click the DATA encoder to load it.');}
+  else if(id==='data'&&(screenMode==='kit'||screenMode==='kitbrowse')){showPanelScreen('kit');setCoach(`Kit ${kitNumber} loaded`,'Clicking the DATA encoder confirms the highlighted kit, just like ENTER.');}
+  else if(id==='right'&&screenMode==='kit')showPanelScreen('kitname');
+  else if(id==='left'&&screenMode==='kitname')showPanelScreen('kit');
+  else if((id==='right'||id==='left')&&screenMode==='pitch')showPanelScreen('lock');
+  else if(id==='enter'&&(screenMode==='kit'||screenMode==='kitbrowse')){showPanelScreen('kit');setCoach(`Kit ${kitNumber} loaded`,'ENTER confirms the kit that was highlighted with DATA or UP/DOWN.');}
+  else if(id==='enter'){setOLED('CONFIRMED','SETTING ACCEPTED',`${editOn?'EDIT ON':'EDIT OFF'} · ${seqOn?'SEQ ON':'SEQ OFF'}`);setCoach('ENTER confirmed the displayed choice','The real machine now enters or applies the current menu item.');}
+  renderDetail(id);
+});
+document.addEventListener('keydown',e=>{if(e.key==='Shift'&&!e.repeat){e.preventDefault();document.querySelector('[data-id="shift"]').classList.add('key-down');pressHardwareShift();renderDetail('shift')}});
+document.addEventListener('keyup',e=>{if(e.key==='Shift')document.querySelector('[data-id="shift"]').classList.remove('key-down')});
+
+function showLesson(i){
+  document.querySelectorAll('.lesson-btn').forEach((b,n)=>b.classList.toggle('active',n===i)); const l=lessons[i];
+  $('lesson').innerHTML=`<div class="eyebrow">Guided workflow</div><h2>${l.title}</h2><ol>${l.steps.map(s=>`<li>${s}</li>`).join('')}</ol><div class="tip"><strong>Remember:</strong> ${l.tip}</div>`;
+}
+$('lesson-nav').innerHTML=lessons.map((l,i)=>`<button class="lesson-btn${i===0?' active':''}" data-lesson="${i}">${l.name}</button>`).join('');
+$('lesson-nav').addEventListener('click',e=>{const b=e.target.closest('[data-lesson]');if(b)showLesson(+b.dataset.lesson)}); showLesson(0);
+renderSteps();showPanelScreen('param');renderDetail('edit');
+</script>
+</body>
+</html>
