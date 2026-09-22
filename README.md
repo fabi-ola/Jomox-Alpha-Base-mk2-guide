@@ -1,4 +1,7 @@
 # Jomox Alpha Base MK2 — Interactive Manual
+## Interactive Guide
+[Open the Jomox Alpha Base MK2 Interactive Guide](alpha-base-mk2-interactive-guide.html)
+![Jomox Alpha Base MK2 Interactive Guide](jomox.png)
 
 This is open-source, interactive learning guide for the Jomox Alpha Base MK2 drum machine. I used codex to help visualize the original Jomox Alpha Base mk2 manual and how to navigate the machine. 
 
